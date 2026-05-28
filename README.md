@@ -106,6 +106,55 @@ Launch the development server:
 npm run dev
 ```
 
+### 4. First-Time Local Playthrough
+After `npm run dev` is running, keep that terminal open and use the URLs below.
+
+#### Host / Big Screen
+Open this on the computer, TV, or projector that will show the shared puzzle board:
+```text
+https://localhost:3000/screen/DEMO
+```
+
+This screen shows the room code and the shared puzzle board. Leave it open while people play.
+
+#### Admin
+Open this in another browser tab:
+```text
+https://localhost:3000/admin
+```
+
+Log in with the admin password. In local development, the default is:
+```text
+admin123
+```
+
+Then:
+1. Choose or upload a puzzle image.
+2. Set the puzzle rows and columns.
+3. Start the activity for room `DEMO`.
+
+#### Players
+Players should join from their phones using the same room code:
+```text
+https://<YOUR_LOCAL_IP>:3000/join/DEMO
+```
+
+Replace `<YOUR_LOCAL_IP>` with the IP address of the computer running the server, for example:
+```text
+https://192.168.1.5:3000/join/DEMO
+```
+
+Each player should:
+1. Open the join URL on their phone.
+2. Accept the browser warning for the self-signed development certificate.
+3. Enter their name.
+4. Use the phone screen to drag and drop assigned puzzle pieces.
+
+For a quick local test on the same computer, you can also open:
+```text
+https://localhost:3000/join/DEMO
+```
+
 ---
 
 ## 🔒 Crucial Dev Detail: SSL/HTTPS
