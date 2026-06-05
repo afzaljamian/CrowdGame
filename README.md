@@ -222,6 +222,14 @@ npm start
 
 A real-time collaborative puzzle game where multiple participants solve a jigsaw puzzle together using their mobile devices while progress is displayed on a shared screen.
 
+## Bug Fixes
+
+### Admin Progress Synchronization Fix
+
+- Fixed an issue where the Admin Panel progress indicator was not updating correctly during gameplay.
+- Progress now updates in real time as players solve puzzle pieces.
+- Ensures consistent progress tracking across Admin, Big Screen, and Mobile clients.
+
 ## Features
 
 ### Core Features
