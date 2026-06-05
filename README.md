@@ -208,3 +208,43 @@ A complete CloudFormation template is provided under [cloudformation.yaml](file:
 1. An **ECS Cluster** running tasks on Fargate.
 2. An **Application Load Balancer** with listener rules routing HTTPS traffic to HTTP container instances.
 3. Integration support for an RDS PostgreSQL database instance and AWS ElastiCache Redis.
+
+# CrowdPlay
+
+A real-time collaborative puzzle game where multiple participants solve a jigsaw puzzle together using their mobile devices while progress is displayed on a shared screen.
+
+## Features
+
+### Core Features
+- Real-time multiplayer puzzle solving
+- Live progress synchronization
+- QR-based room joining
+- Admin control panel
+- Dynamic puzzle generation
+
+### Enhancements Added
+- 🏆 Live Leaderboard
+  - Displays top players in real time based on score.
+
+- 🎖 Achievement System
+  - First Piece
+  - Puzzle Hunter
+  - Puzzle Master
+
+- ⚡ Last Solver Tracker
+  - Shows the most recent participant who contributed to puzzle progress.
+
+- 📊 Real-Time Score Updates
+  - Scores update instantly as pieces are solved.
+
+## Tech Stack
+
+- Node.js
+- Express.js
+- Socket.IO
+- JavaScript
+- HTML/CSS
+
+## Author
+
+Md Afzal
