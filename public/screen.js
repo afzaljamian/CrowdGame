@@ -211,7 +211,12 @@ function setupConnection() {
   // Event: Piece snapped correctly
   socket.on('piece-placed', (data) => {
     const { pieceId, correctX, correctY, placedBy, progress, isSolved } = data;
-    
+
+    //Recieve Leaderboard event
+
+//     socket.on('leaderboard-update', (data) => {
+//   renderLeaderboard(data.leaderboard);
+// });
     // Snapped piece removes its temporary live dragging marker
     dragPositions.delete(pieceId);
     
@@ -232,13 +237,30 @@ function setupConnection() {
     
     // Ticker announcement
     const ticker = document.getElementById('activityTicker');
-    ticker.textContent = `🎯 ${placedBy} placed piece (${progress}% solved)`;
+    // ticker.textContent = `🎯 ${placedBy} placed piece (${progress}% solved)`;
+    //ticker improvement
+    
+    ticker.innerHTML = `
+⚡ LAST SOLVER:
+<b>${placedBy}</b>
+(${progress}% solved)
+`;
     ticker.classList.add('pulse');
     setTimeout(() => ticker.classList.remove('pulse'), 400);
 
     // Update HUD
     document.getElementById('hudProgressFill').style.width = `${progress}%`;
     document.getElementById('hudProgressText').textContent = `${progress}%`;
+  });
+
+  //Event listener(added)
+  socket.on('achievement-unlocked', (data) => {
+    showAchievementPopup(data.player, data.achievement);
+  });
+
+  //leaderboard update
+  socket.on('leaderboard-update', (data) => {
+    renderLeaderboard(data.leaderboard);
   });
 
   // Event: Puzzle solved!
@@ -452,6 +474,61 @@ function triggerPuzzleCompletion({ leaderboard, totalPieces }) {
   // Fill stats
   document.getElementById('totalSlicesPlaced').textContent = totalPieces;
   document.getElementById('solvedDuration').textContent = `${durationSec} seconds`;
+  
+  // MVP PLAYER
+const mvpPlayer = leaderboard[0];
+
+const completionBanner = document.querySelector('.completion-banner');
+
+let existingMvp = document.getElementById('mvpCard');
+
+if (!existingMvp) {
+  const mvpCard = document.createElement('div');
+
+  mvpCard.id = 'mvpCard';
+
+  mvpCard.innerHTML = `
+    <div style="
+      margin-top:20px;
+      margin-bottom:25px;
+      padding:20px;
+      border:2px solid #ffb800;
+      border-radius:15px;
+      background:rgba(255,184,0,0.08);
+      text-align:center;
+      box-shadow:
+        0 0 15px rgba(255,184,0,0.4),
+        0 0 40px rgba(255,184,0,0.15);
+    ">
+      <div style="
+        color:#ffb800;
+        font-size:18px;
+        font-weight:bold;
+      ">
+         MVP PLAYER
+      </div>
+
+      <div style="
+        font-size:34px;
+        color:#00f3ff;
+        margin-top:10px;
+        font-weight:bold;
+      ">
+        ${mvpPlayer.displayName}
+      </div>
+
+      <div style="
+        color:white;
+        margin-top:8px;
+        font-size:22px;
+      ">
+        ${mvpPlayer.score} POINTS
+      </div>
+    </div>
+  `;
+
+  completionBanner.appendChild(mvpCard);
+}
 
   // Render leaderboard list
   const list = document.getElementById('leaderboardList');
@@ -506,7 +583,71 @@ function handleResize() {
     initStars();
   }
 }
+// //Render function
+// socket.on('leaderboard-update', (data) => {
+//   renderLeaderboard(data.leaderboard);
+// });
 
+//function definition
+function showAchievementPopup(player, achievement) {
+  const popup = document.createElement('div');
+
+  popup.className = 'achievement-popup';
+
+  popup.innerHTML = `
+  <div style="font-size:32px;">🏆</div>
+  <div style="color:#ffb800;">ACHIEVEMENT UNLOCKED</div>
+  <div style="margin-top:10px;color:#00f3ff;">
+      ${player}
+  </div>
+  <div style="margin-top:10px;font-size:28px;">
+      ${achievement}
+  </div>
+`;
+
+  document.body.appendChild(popup);
+
+  setTimeout(() => popup.remove(), 4000);
+}
+//added render leaderboard
+function renderLeaderboard(leaderboard) {
+  let board = document.getElementById('liveLeaderboard');
+
+  if (!board) {
+    board = document.createElement('div');
+    board.id = 'liveLeaderboard';
+
+    board.style.position = 'fixed';
+    board.style.top = '120px';
+    board.style.right = '20px';
+    board.style.width = '280px';
+    board.style.background = 'rgba(0,0,0,0.8)';
+    board.style.border = '2px solid #00f3ff';
+    board.style.padding = '15px';
+    board.style.borderRadius = '12px';
+    board.style.zIndex = '9999';
+
+    document.body.appendChild(board);
+  }
+
+  board.innerHTML = `
+    <h3 style="color:#00f3ff;margin-bottom:10px;">
+      LIVE LEADERBOARD
+    </h3>
+
+    ${leaderboard.map((p,index)=>`
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:8px;
+        color:white;
+      ">
+        <span>#${index+1} ${p.name}</span>
+        <span>${p.score}</span>
+      </div>
+    `).join('')}
+  `;
+}
 window.addEventListener('DOMContentLoaded', () => {
   bgCanvas = document.getElementById('bgCanvas');
   bgCtx = bgCanvas.getContext('2d');

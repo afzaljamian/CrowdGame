@@ -202,6 +202,29 @@ function initSockets(io) {
           isSolved: result.isSolved
         });
 
+        // (added)Achievement notification
+  if (result.achievement) {
+    io.to(socket.roomCode).emit('achievement-unlocked', {
+      player: result.placedBy,
+      achievement: result.achievement
+    });
+  }
+
+  // Send a fresh set of assigned pieces specifically to the placing player
+  socket.emit('assign-pieces', {
+    assignedPieces: room.activity.getStateForPlayer(socket.playerId).assignedPieces
+  });
+
+        // LIVE LEADERBOARD EVENT
+  io.to(socket.roomCode).emit('leaderboard-update', {
+    leaderboard: room.activity.getLeaderboard()
+  });
+
+  socket.emit('assign-pieces', {
+    assignedPieces: room.activity.getStateForPlayer(socket.playerId).assignedPieces
+  });
+
+
         // Send a fresh set of assigned pieces specifically to the placing player
         socket.emit('assign-pieces', {
           assignedPieces: room.activity.getStateForPlayer(socket.playerId).assignedPieces

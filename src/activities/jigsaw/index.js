@@ -233,6 +233,22 @@ class JigsawActivity extends BaseActivity {
       
       // Update participant score
       player.score += 100; // 100 points for correct placement
+
+      //Track how many puzzle pieces the player has successfully solved
+      player.piecesSolved = player.piecesSolved || 0;
+       player.piecesSolved++;
+
+let achievement = null;
+
+if (player.piecesSolved === 1)
+  achievement = 'FIRST PIECE';
+
+if (player.piecesSolved === 5)
+  achievement = 'PUZZLE HUNTER';
+
+if (player.piecesSolved === 10)
+  achievement = 'PUZZLE MASTER';
+
       
       // Assign a new piece to the player
       this.assignPiecesToPlayer(player.id);
@@ -252,7 +268,8 @@ class JigsawActivity extends BaseActivity {
         placedBy: player.displayName,
         score: player.score,
         isSolved,
-        progress: this.getProgress()
+        progress: this.getProgress(),
+        achievement
       };
     } else {
       // Wrong placement - track position and update player score (slight penalty or just sync coordinates)
@@ -332,6 +349,20 @@ class JigsawActivity extends BaseActivity {
     if (this.totalPieces === 0) return 0;
     return Math.round((this.piecesPlaced / this.totalPieces) * 100);
   }
+  //LIVE LEADERBOARD
+  getLeaderboard() {
+    const room = this.roomManager.getRoom(this.roomCode);
+  
+    return Array.from(room.participants.values())
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map(p => ({
+        name: p.displayName,
+        score: p.score,
+        color: p.color
+      }));
+  }
 }
+
 
 module.exports = JigsawActivity;

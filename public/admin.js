@@ -92,9 +92,17 @@ document.addEventListener('DOMContentLoaded', () => {
       consoleLogMsg(`Player '${data.displayName}' disconnected.`);
       attendeesCount.textContent = data.count;
     });
+     //THIS IS THE BUG(as data.correct does not exist in payload)
+    // socket.on('piece-placed', (data) => {
+    //   if (data.correct) {
+    //     consoleLogMsg(`Piece solved by ${data.placedBy}! Progress: ${data.progress}%`);
+    //     puzzleProgress.textContent = `${data.progress}%`;
+    //   }
+    // });
 
+    //BUG FIXED
     socket.on('piece-placed', (data) => {
-      if (data.correct) {
+      if (typeof data.progress !== 'undefined') {
         consoleLogMsg(`Piece solved by ${data.placedBy}! Progress: ${data.progress}%`);
         puzzleProgress.textContent = `${data.progress}%`;
       }

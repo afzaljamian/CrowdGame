@@ -475,6 +475,40 @@ body {
   box-shadow: 0 0 15px var(--color-cyan);
 }
 
+/*popup added*/
+.achievement-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.95);
+  border: 3px solid #ffb800;
+  color: white;
+  padding: 30px 50px;
+  border-radius: 20px;
+  text-align: center;
+  z-index: 99999;
+
+  box-shadow:
+    0 0 20px #ffb800,
+    0 0 50px #ffb800;
+
+  animation: popupAnim 4s ease forwards;
+}
+
+/* Achievement Animation */
+@keyframes achievementSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(300px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Animations */
 @keyframes pulse {
   0%, 100% { opacity: 0.6; }
