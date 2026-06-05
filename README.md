@@ -209,6 +209,15 @@ A complete CloudFormation template is provided under [cloudformation.yaml](file:
 2. An **Application Load Balancer** with listener rules routing HTTPS traffic to HTTP container instances.
 3. Integration support for an RDS PostgreSQL database instance and AWS ElastiCache Redis.
 
+   
+## Installation
+
+npm install
+
+## Run
+
+npm start
+
 # CrowdPlay
 
 A real-time collaborative puzzle game where multiple participants solve a jigsaw puzzle together using their mobile devices while progress is displayed on a shared screen.
